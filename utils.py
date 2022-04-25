@@ -1,5 +1,6 @@
 from typing import BinaryIO, Tuple, Union, Optional, Match
 from PyQt5 import uic, QtWidgets
+from PyQt5 import QtGui
 from os.path import exists
 from PIL.Image import Image
 from PIL import Image
@@ -48,8 +49,7 @@ def str_to_bytes(x: any, charset: str = sys.getdefaultencoding(), errors: str = 
     raise TypeError("Expected bytes")
 
 
-def lsb_interleave_bytes(carrier: any, payload: any, lsb_number: any, truncate: bool = False,
-                         byte_depth: int = 1) -> bytes:
+def lsb_interleave_bytes(carrier: any, payload: any, lsb_number: int, truncate: bool = False, byte_depth: int = 1) -> any:
     plen = len(payload)
     payload_bits = np.zeros(shape=(plen, 8), dtype=np.uint8)
     payload_bits[:plen, :] = np.unpackbits(
@@ -72,7 +72,7 @@ def lsb_interleave_bytes(carrier: any, payload: any, lsb_number: any, truncate: 
     return ret if truncate else ret + carrier[byte_depth * bit_height:]
 
 
-def lsb_deinterleave_bytes(carrier: any, num_bits: int, lsb_number: int, byte_depth: int = 1) -> bytes:
+def lsb_deinterleave_bytes(carrier: any, num_bits: int, lsb_number: int, byte_depth: int = 1) -> any:
     plen = roundup(num_bits / lsb_number)
     carrier_dtype = byte_depth_to_dtype[byte_depth]
     payload_bits = np.unpackbits(
@@ -89,7 +89,7 @@ def lsb_interleave_list(carrier: any, payload: any, lsb_number: int) -> any:
     return carrier
 
 
-def lsb_deinterleave_list(carrier: any, num_bits: int, lsb_number: int):
+def lsb_deinterleave_list(carrier: any, num_bits: int, lsb_number: int) -> Union[int, bytes]:
     plen = roundup(num_bits / lsb_number)
     carrier_bytes = np.array(carrier[:plen], dtype=np.uint8).tobytes()
     deinterleaved = lsb_deinterleave_bytes(carrier_bytes, num_bits, lsb_number)
