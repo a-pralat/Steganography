@@ -49,7 +49,8 @@ def str_to_bytes(x: any, charset: str = sys.getdefaultencoding(), errors: str = 
     raise TypeError("Expected bytes")
 
 
-def lsb_interleave_bytes(carrier: any, payload: any, lsb_number: int, truncate: bool = False, byte_depth: int = 1) -> any:
+def lsb_interleave_bytes(carrier: any, payload: any, lsb_number: int,
+                         truncate: bool = False, byte_depth: int = 1) -> any:
     plen = len(payload)
     payload_bits = np.zeros(shape=(plen, 8), dtype=np.uint8)
     payload_bits[:plen, :] = np.unpackbits(

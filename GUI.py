@@ -53,7 +53,7 @@ class GUI:
 
         # encode
         encoded = byte_xor(message, key)
-        encoded_file = 'messages/encoded.txt'
+        encoded_file = 'output/encoded.txt'
         try:
             file = open(encoded_file, 'wb')
             file.write(encoded)
@@ -63,12 +63,12 @@ class GUI:
 
         # hide
         input_image = self.window.textInputImage.toPlainText()
-        if not exists(input_image) or not input_image.lower().endswith(('.bmp', '.png')):
+        if not exists(input_image) or not input_image.lower().endswith(('.bmp', '.png', '.jpg')):
             self.message_box.about(self.message_box, 'Info', 'Invalid input image path')
             return
 
         output_image = self.window.textOutputImage.toPlainText()
-        if output_image == '' or not output_image.lower().endswith(('.bmp', '.png')):
+        if output_image == '' or not output_image.lower().endswith(('.bmp', '.png', '.jpg')):
             self.message_box.about(self.message_box, 'Info', 'Invalid output image path')
             return
 
@@ -91,11 +91,11 @@ class GUI:
         print('Decryption')
         # recover
         input_image = self.window.textInputImage.toPlainText()
-        if not exists(input_image) or not input_image.lower().endswith(('.bmp', '.png')):
+        if not exists(input_image) or not input_image.lower().endswith(('.bmp', '.png', '.jpg')):
             self.message_box.about(self.message_box, 'Info', 'Invalid input image path')
             return
 
-        output_file = 'messages/output.txt'
+        output_file = 'output/output.txt'
 
         lsb_number = self.window.textLSBNumber.toPlainText()
         if not valid_lsb_number(lsb_number):
@@ -116,7 +116,7 @@ class GUI:
 
             # decode
             decoded = byte_xor(message, key)
-            decoded_file = 'messages/decoded.txt'
+            decoded_file = 'output/decoded.txt'
             try:
                 file = open(decoded_file, 'wb')
                 file.write(decoded)
@@ -148,6 +148,11 @@ class GUI:
     def info(self) -> None:
         self.message_box.about(
             self.message_box, 'Info: Steganography with BBS and LSB',
+            'General\n'
+            'At the beginning of the output image HIDDEN TEXT SIZE is given!\n'
+            'Changing and saving image direction: horizontal\n'
+            'If you give too large file, program informs you about it\n'
+            'If you attack - it reads trash!\n\n'
             'Encryption\n'
             '1. Create pseudorandom key with chosen BBS seed\n'
             '2. Encrypt message by XOR operation with key and message\n'
@@ -162,8 +167,8 @@ class GUI:
         self.message_box.about(
             self.message_box, 'Help',
             'Input text: plain text / file path\n'
-            'Input image: image path (.bmp or .png)\n'
-            'Output image: image path (.bmp or .png)\n'
+            'Input image: image path (.bmp, .png or .jpg)\n'
+            'Output image: image path (.bmp, .png or .jpg)\n'
             'Data size: limited by system\n'
             'Data format: Unicode encoding\n'
             'Open text file: File -> Open\n'
